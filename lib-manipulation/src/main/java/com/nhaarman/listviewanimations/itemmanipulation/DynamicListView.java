@@ -135,6 +135,11 @@ public class DynamicListView extends ListView {
     public void setOnScrollListener(final OnScrollListener onScrollListener) {
         mMyOnScrollListener.addOnScrollListener(onScrollListener);
     }
+    
+//    protected boolean recycleOnMeasure() {
+//        return false;
+//    }
+
 
     /**
      * Enables the drag and drop functionality for this {@code DynamicListView}.

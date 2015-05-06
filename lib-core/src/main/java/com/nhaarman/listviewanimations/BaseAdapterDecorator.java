@@ -39,7 +39,7 @@ import com.nhaarman.listviewanimations.util.Swappable;
  * <p/>
  * Classes extending this class can override methods and provide extra functionality before or after calling the super method.
  */
-public abstract class BaseAdapterDecorator extends BaseAdapter implements SectionIndexer, Swappable, Insertable, Removable, OnNotifyDataSetChanged, ListViewWrapperSetter {
+public abstract class BaseAdapterDecorator extends BaseAdapter implements NotifiableAdapter, SectionIndexer, Swappable, Insertable, Removable, OnNotifyDataSetChanged, ListViewWrapperSetter {
 
     /**
      * The {@link android.widget.BaseAdapter} this {@code BaseAdapterDecorator} decorates.
@@ -65,10 +65,8 @@ public abstract class BaseAdapterDecorator extends BaseAdapter implements Sectio
      * @param baseAdapter the {@code} BaseAdapter to decorate.
      */
     protected BaseAdapterDecorator(@NonNull final BaseAdapter baseAdapter) {
-        if (baseAdapter instanceof ListViewAnimationsBaseAdapter) {
-            ((ListViewAnimationsBaseAdapter) baseAdapter).setOnNotifyDataSetChanged(this);
-        } else if (baseAdapter instanceof BaseAdapterDecorator) {
-            ((BaseAdapterDecorator) baseAdapter).setOnNotifyDataSetChanged(this);
+        if (baseAdapter instanceof NotifiableAdapter) {
+            ((NotifiableAdapter) baseAdapter).setOnNotifyDataSetChanged(this);
         }
         mDecoratedBaseAdapter = baseAdapter;
     }
@@ -81,6 +79,7 @@ public abstract class BaseAdapterDecorator extends BaseAdapter implements Sectio
         return mDecoratedBaseAdapter;
     }
 
+    @Override
     public void setOnNotifyDataSetChanged(final OnNotifyDataSetChanged onNotifyDataSetChanged) {
         mOnNotifyDataSetChanged = onNotifyDataSetChanged;
     }

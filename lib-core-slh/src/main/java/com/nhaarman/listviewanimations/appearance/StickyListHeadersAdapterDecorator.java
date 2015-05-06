@@ -139,10 +139,9 @@ public class StickyListHeadersAdapterDecorator extends BaseAdapterDecorator impl
         } else {
             childAnimators = new Animator[0];
         }
-        Animator alphaAnimator = ObjectAnimator.ofFloat(view, ALPHA, 0, 1);
 
         assert mViewAnimator != null;
-        mViewAnimator.animateViewIfNecessary(position, view, AnimatorUtil.concatAnimators(childAnimators, new Animator[0], alphaAnimator));
+        mViewAnimator.animateViewIfNecessary(position, view, AnimatorUtil.concatAnimators(childAnimators, new Animator[0]));
     }
 
     @Override

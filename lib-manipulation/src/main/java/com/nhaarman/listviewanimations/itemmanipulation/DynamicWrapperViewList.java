@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.emilsjolander.stickylistheaders.AbsListViewHeadersSupport;
 import se.emilsjolander.stickylistheaders.WrapperListViewLifeCycleListener;
 import se.emilsjolander.stickylistheaders.WrapperView;
 import se.emilsjolander.stickylistheaders.WrapperViewListInterface;
@@ -15,7 +16,7 @@ import android.view.View;
 import android.widget.AbsListView;
 
 
-public class DynamicWrapperViewList extends DynamicListView implements WrapperViewListInterface {
+public class DynamicWrapperViewList extends DynamicListView implements WrapperViewListInterface, AbsListViewHeadersSupport {
 
     private WrapperListViewLifeCycleListener mLifeCycleListener; 
     private List<View> mFooterViews;
@@ -190,6 +191,20 @@ public class DynamicWrapperViewList extends DynamicListView implements WrapperVi
     protected void layoutChildren() {
         if (!mBlockLayoutChildren) {
             super.layoutChildren();
+        }
+    }
+    
+    @Override
+    protected void onAttachedToWindow() {
+        int index = getFirstVisiblePosition();
+        View v = getChildAt(0);
+        if (v != null) {
+            int top = (v == null) ? 0 : v.getTop();
+            super.onAttachedToWindow();
+            setSelectionFromTop(index, top);
+        }
+        else {
+            super.onAttachedToWindow();
         }
     }
 }

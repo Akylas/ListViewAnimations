@@ -135,7 +135,7 @@ public class AnimateAdditionAdapter<T> extends BaseAdapterDecorator {
     /**
      * Sets the {@link android.widget.ListView} that is used for this {@code AnimateAdditionAdapter}.
      */
-    public void setListView(@NonNull final ListView listView) {
+    public void setListView(@NonNull final AbsListView listView) {
         setListViewWrapper(new AbsListViewWrapper(listView));
     }
 

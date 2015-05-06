@@ -25,6 +25,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.SparseArray;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Interpolator;
 import android.widget.GridView;
 
 import com.nhaarman.listviewanimations.util.ListViewWrapper;
@@ -233,6 +235,24 @@ public class ViewAnimator {
             mLastAnimatedPosition = position;
         }
     }
+    
+    public static class DelayInterpolator  implements Interpolator
+    {
+        static Interpolator interpolator = new AccelerateDecelerateInterpolator();
+        float delay;
+        
+        public DelayInterpolator(float delay)
+        {
+            this.delay = delay;
+        }
+        @Override
+        public float getInterpolation(float input) {
+            if ( input < delay) {
+                return 0.0f;
+            }
+            return interpolator.getInterpolation((input - delay)/(1.0f - delay));
+        }
+    }
 
     /**
      * Animates given View.
@@ -244,13 +264,13 @@ public class ViewAnimator {
             mAnimationStartMillis = SystemClock.uptimeMillis();
         }
 
-        ViewHelper.setAlpha(view, 0);
-
         AnimatorSet set = new AnimatorSet();
         set.playTogether(animators);
-        set.setStartDelay(calculateAnimationDelay(position));
-        set.setDuration(mAnimationDurationMillis);
+        long delay = calculateAnimationDelay(position);
+        set.setInterpolator(new DelayInterpolator(delay / (mAnimationDurationMillis + delay)));
+        set.setDuration(mAnimationDurationMillis + delay);
         set.start();
+        view.invalidate();
 
         mAnimators.put(view.hashCode(), set);
     }

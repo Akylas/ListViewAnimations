@@ -10,7 +10,7 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListViewAbstract;
 
 
 public class DynamicStickyListHeadersListView extends
-        StickyListHeadersListViewAbstract {
+        StickyListHeadersListViewAbstract<DynamicWrapperViewList> implements DynamicStickyListHeadersAbsListViewInterface {
     public DynamicStickyListHeadersListView(Context context) {
         super(context);
     }

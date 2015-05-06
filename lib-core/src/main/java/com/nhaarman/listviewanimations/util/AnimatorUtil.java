@@ -29,8 +29,8 @@ public class AnimatorUtil {
      * Merges given Animators into one array.
      */
     @NonNull
-    public static Animator[] concatAnimators(@NonNull final Animator[] childAnimators, @NonNull final Animator[] animators, @NonNull final Animator alphaAnimator) {
-        Animator[] allAnimators = new Animator[childAnimators.length + animators.length + 1];
+    public static Animator[] concatAnimators(@NonNull final Animator[] childAnimators, @NonNull final Animator[] animators) {
+        Animator[] allAnimators = new Animator[childAnimators.length + animators.length];
         int i;
 
         for (i = 0; i < childAnimators.length; ++i) {
@@ -42,7 +42,6 @@ public class AnimatorUtil {
             ++i;
         }
 
-        allAnimators[allAnimators.length - 1] = alphaAnimator;
         return allAnimators;
     }
 

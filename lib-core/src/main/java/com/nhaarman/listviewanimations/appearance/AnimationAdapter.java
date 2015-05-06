@@ -156,7 +156,10 @@ public abstract class AnimationAdapter extends BaseAdapterDecorator {
      */
     private void animateViewIfNecessary(final int position, @NonNull final View view, @NonNull final ViewGroup parent) {
         assert mViewAnimator != null;
-
+        Animator[] animators = getAnimators(parent, view);
+        if (animators == null) {
+            return;
+        }
         /* GridView measures the first View which is returned by getView(int, View, ViewGroup), but does not use that View.
            On KitKat, it does this actually multiple times.
            Therefore, we animate all these first Views, and reset the last animated position when we suspect GridView is measuring. */
@@ -169,15 +172,12 @@ public abstract class AnimationAdapter extends BaseAdapterDecorator {
 
         Animator[] childAnimators;
         if (getDecoratedBaseAdapter() instanceof AnimationAdapter) {
-            childAnimators = ((AnimationAdapter) getDecoratedBaseAdapter()).getAnimators(parent, view);
+            childAnimators = AnimatorUtil.concatAnimators(((AnimationAdapter) getDecoratedBaseAdapter()).getAnimators(parent, view), animators);
         } else {
-            childAnimators = new Animator[0];
+            childAnimators = animators;
         }
-        Animator[] animators = getAnimators(parent, view);
-        Animator alphaAnimator = ObjectAnimator.ofFloat(view, ALPHA, 0, 1);
 
-        Animator[] concatAnimators = AnimatorUtil.concatAnimators(childAnimators, animators, alphaAnimator);
-        mViewAnimator.animateViewIfNecessary(position, view, concatAnimators);
+        mViewAnimator.animateViewIfNecessary(position, view, childAnimators);
     }
 
     /**
