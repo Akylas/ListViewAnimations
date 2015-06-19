@@ -44,7 +44,7 @@ public class ScaleInAnimationAdapter extends AnimationAdapter {
 
     @NonNull
     @Override
-    public Animator[] getAnimators(@NonNull final ViewGroup parent, @NonNull final View view) {
+    public Animator[] getAnimators(final int position, @NonNull View view, @NonNull ViewGroup parent) {
         ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, SCALE_X, mScaleFrom, 1f);
         ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, SCALE_Y, mScaleFrom, 1f);
         return new ObjectAnimator[]{scaleX, scaleY};

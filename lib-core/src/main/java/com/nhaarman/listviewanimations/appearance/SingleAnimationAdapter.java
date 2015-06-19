@@ -35,8 +35,8 @@ public abstract class SingleAnimationAdapter extends AnimationAdapter {
 
     @NonNull
     @Override
-    public Animator[] getAnimators(@NonNull final ViewGroup parent, @NonNull final View view) {
-        Animator animator = getAnimator(parent, view);
+    public Animator[] getAnimators(final int position, @NonNull View view, @NonNull ViewGroup parent) {
+        Animator animator = getAnimator(position, view, parent);
         if (animator != null) {
             return new Animator[]{animator};
         }
@@ -51,6 +51,6 @@ public abstract class SingleAnimationAdapter extends AnimationAdapter {
      *               {@link #getView(int, View, ViewGroup)}.
      */
     @NonNull
-    protected abstract Animator getAnimator(@NonNull ViewGroup parent, @NonNull View view);
+    protected abstract Animator getAnimator(final int position, @NonNull View view, @NonNull ViewGroup parent);
 
 }

@@ -38,7 +38,7 @@ public class SwingRightInAnimationAdapter extends SingleAnimationAdapter {
 
     @NonNull
     @Override
-    protected Animator getAnimator(@NonNull final ViewGroup parent, @NonNull final View view) {
+    protected Animator getAnimator(final int position, @NonNull View view, @NonNull ViewGroup parent) {
         return ObjectAnimator.ofFloat(view, TRANSLATION_X, parent.getWidth(), 0);
     }
 }

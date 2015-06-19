@@ -38,7 +38,7 @@ public class SwingBottomInAnimationAdapter extends SingleAnimationAdapter {
 
     @Override
     @NonNull
-    protected Animator getAnimator(@NonNull final ViewGroup parent, @NonNull final View view) {
+    protected Animator getAnimator(final int position, @NonNull View view, @NonNull ViewGroup parent) {
         return ObjectAnimator.ofFloat(view, TRANSLATION_Y, parent.getMeasuredHeight() >> 1, 0);
     }
 

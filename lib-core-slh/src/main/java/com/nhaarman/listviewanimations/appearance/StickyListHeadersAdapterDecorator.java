@@ -135,7 +135,7 @@ public class StickyListHeadersAdapterDecorator extends BaseAdapterDecorator impl
     private void animateViewIfNecessary(final int position, @NonNull final View view, @NonNull final ViewGroup parent) {
         Animator[] childAnimators;
         if (getDecoratedBaseAdapter() instanceof AnimationAdapter) {
-            childAnimators = ((AnimationAdapter) getDecoratedBaseAdapter()).getAnimators(parent, view);
+            childAnimators = ((AnimationAdapter) getDecoratedBaseAdapter()).getAnimators(position, view, parent);
         } else {
             childAnimators = new Animator[0];
         }

@@ -90,6 +90,7 @@ public class DynamicListItemView extends FrameLayout {
      */
     public DynamicListItemView(final Context context) {
         super(context);
+        setClipChildren(false);
         mContainerView = new FrameLayout(context) {
             @Override
             protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -117,6 +118,7 @@ public class DynamicListItemView extends FrameLayout {
                 }
             }
         };
+        mContainerView.setClipChildren(false);
         addView(mContainerView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         mContext = context;
     }

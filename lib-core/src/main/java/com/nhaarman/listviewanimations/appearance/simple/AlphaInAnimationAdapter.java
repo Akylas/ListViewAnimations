@@ -31,7 +31,7 @@ public class AlphaInAnimationAdapter extends AnimationAdapter {
 
     @NonNull
     @Override
-    public Animator[] getAnimators(@NonNull final ViewGroup parent, @NonNull final View view) {
+    public Animator[] getAnimators(final int position, @NonNull View view, @NonNull ViewGroup parent) {
         return new Animator[0];
     }
 }

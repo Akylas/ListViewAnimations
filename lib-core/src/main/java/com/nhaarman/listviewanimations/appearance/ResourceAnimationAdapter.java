@@ -34,7 +34,6 @@ public abstract class ResourceAnimationAdapter extends AnimationAdapter {
     @NonNull
     private final Context mContext;
 
-    @SuppressWarnings("UnusedDeclaration")
     protected ResourceAnimationAdapter(@NonNull final BaseAdapter baseAdapter, @NonNull final Context context) {
         super(baseAdapter);
         mContext = context;
@@ -42,7 +41,7 @@ public abstract class ResourceAnimationAdapter extends AnimationAdapter {
 
     @NonNull
     @Override
-    public Animator[] getAnimators(@NonNull final ViewGroup parent, @NonNull final View view) {
+    public Animator[] getAnimators(final int position, @NonNull View view, @NonNull ViewGroup parent) {
         return new Animator[]{AnimatorInflater.loadAnimator(mContext, getAnimationResourceId())};
     }
 

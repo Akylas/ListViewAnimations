@@ -25,14 +25,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.SparseArray;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Interpolator;
 import android.widget.GridView;
 
 import com.nhaarman.listviewanimations.util.ListViewWrapper;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
-import com.nineoldandroids.view.ViewHelper;
 
 /**
  * A class which decides whether given Views should be animated based on their position: each View should only be animated once.
@@ -84,12 +81,12 @@ public class ViewAnimator {
     /**
      * The delay in millis between view animations.
      */
-    private int mAnimationDelayMillis = DEFAULT_ANIMATION_DELAY_MILLIS;
+    private long mAnimationDelayMillis = DEFAULT_ANIMATION_DELAY_MILLIS;
 
     /**
      * The duration in millis of the animations.
      */
-    private int mAnimationDurationMillis = DEFAULT_ANIMATION_DURATION_MILLIS;
+    private long mAnimationDurationMillis = DEFAULT_ANIMATION_DURATION_MILLIS;
 
     /**
      * The start timestamp of the first animation, as returned by {@link android.os.SystemClock#uptimeMillis()}.
@@ -180,7 +177,7 @@ public class ViewAnimator {
      *
      * @param delayMillis the time in milliseconds.
      */
-    public void setAnimationDelayMillis(final int delayMillis) {
+    public void setAnimationDelayMillis(final long delayMillis) {
         mAnimationDelayMillis = delayMillis;
     }
 
@@ -189,7 +186,7 @@ public class ViewAnimator {
      *
      * @param durationMillis the time in milliseconds.
      */
-    public void setAnimationDurationMillis(final int durationMillis) {
+    public void setAnimationDurationMillis(final long durationMillis) {
         mAnimationDurationMillis = durationMillis;
     }
 
@@ -218,7 +215,10 @@ public class ViewAnimator {
             mAnimators.remove(hashCode);
         }
     }
-
+    
+    public boolean shouldAnimate(final int position) {
+        return mShouldAnimate && position > mLastAnimatedPosition;
+    }
     /**
      * Animates given View if necessary.
      *
@@ -226,33 +226,32 @@ public class ViewAnimator {
      * @param view     the View that should be animated.
      */
     public void animateViewIfNecessary(final int position, @NonNull final View view, @NonNull final Animator[] animators) {
-        if (mShouldAnimate && position > mLastAnimatedPosition) {
-            if (mFirstAnimatedPosition == -1) {
-                mFirstAnimatedPosition = position;
-            }
-
-            animateView(position, view, animators);
-            mLastAnimatedPosition = position;
+        if (mFirstAnimatedPosition == -1) {
+            mFirstAnimatedPosition = position;
         }
+        if (animators != null) {
+            animateView(position, view, animators);
+        }
+        mLastAnimatedPosition = position;
     }
     
-    public static class DelayInterpolator  implements Interpolator
-    {
-        static Interpolator interpolator = new AccelerateDecelerateInterpolator();
-        float delay;
+    // public static class DelayInterpolator  implements Interpolator
+    // {
+    //     static Interpolator interpolator = new AccelerateDecelerateInterpolator();
+    //     float delay;
         
-        public DelayInterpolator(float delay)
-        {
-            this.delay = delay;
-        }
-        @Override
-        public float getInterpolation(float input) {
-            if ( input < delay) {
-                return 0.0f;
-            }
-            return interpolator.getInterpolation((input - delay)/(1.0f - delay));
-        }
-    }
+    //     public DelayInterpolator(float delay)
+    //     {
+    //         this.delay = delay;
+    //     }
+    //     @Override
+    //     public float getInterpolation(float input) {
+    //         if ( input < delay) {
+    //             return 0.0f;
+    //         }
+    //         return interpolator.getInterpolation((input - delay)/(1.0f - delay));
+    //     }
+    // }
 
     /**
      * Animates given View.
@@ -260,15 +259,23 @@ public class ViewAnimator {
      * @param view the View that should be animated.
      */
     private void animateView(final int position, @NonNull final View view, @NonNull final Animator[] animators) {
+        long currentTime = SystemClock.uptimeMillis();
         if (mAnimationStartMillis == -1) {
-            mAnimationStartMillis = SystemClock.uptimeMillis();
+            mAnimationStartMillis = currentTime;
+        }
+        
+        long duration = mAnimationDurationMillis;
+        if (animators.length == 1 && animators[0].getDuration() >= 0) {
+            duration = animators[0].getDuration();
         }
 
         AnimatorSet set = new AnimatorSet();
         set.playTogether(animators);
-        long delay = calculateAnimationDelay(position);
-        set.setInterpolator(new DelayInterpolator(delay / (mAnimationDurationMillis + delay)));
-        set.setDuration(mAnimationDurationMillis + delay);
+        long delay = calculateAnimationDelay(position, currentTime, duration);
+        // long total = duration + delay;
+        // set.setInterpolator(new DelayInterpolator(delay / total));
+        // set.setDuration(duration);
+        set.setStartDelay(delay);
         set.start();
         view.invalidate();
 
@@ -279,8 +286,8 @@ public class ViewAnimator {
      * Returns the delay in milliseconds after which animation for View with position mLastAnimatedPosition + 1 should start.
      */
     @SuppressLint("NewApi")
-    private int calculateAnimationDelay(final int position) {
-        int delay;
+    private long calculateAnimationDelay(final int position, final long startTime, final long duration) {
+        long delay;
 
         int lastVisiblePosition = mListViewWrapper.getLastVisiblePosition();
         int firstVisiblePosition = mListViewWrapper.getFirstVisiblePosition();
@@ -296,8 +303,9 @@ public class ViewAnimator {
                 delay += mAnimationDelayMillis * (position % numColumns);
             }
         } else {
-            int delaySinceStart = (position - mFirstAnimatedPosition) * mAnimationDelayMillis;
-            delay = Math.max(0, (int) (-SystemClock.uptimeMillis() + mAnimationStartMillis + mInitialDelayMillis + delaySinceStart));
+            long delaySinceStart = (position - mFirstAnimatedPosition) * mAnimationDelayMillis;
+//            delay = Math.max(0, (-startTime + mAnimationStartMillis + duration + mInitialDelayMillis + delaySinceStart));
+            delay = Math.max(0, (mInitialDelayMillis + delaySinceStart));
         }
         return delay;
     }

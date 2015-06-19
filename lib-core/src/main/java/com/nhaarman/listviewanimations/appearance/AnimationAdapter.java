@@ -27,7 +27,6 @@ import com.nhaarman.listviewanimations.BaseAdapterDecorator;
 import com.nhaarman.listviewanimations.util.AnimatorUtil;
 import com.nhaarman.listviewanimations.util.ListViewWrapper;
 import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.ObjectAnimator;
 
 /**
  * A {@link BaseAdapterDecorator} class which applies multiple {@link Animator}s at once to views when they are first shown. The Animators applied include the animations specified
@@ -39,12 +38,6 @@ public abstract class AnimationAdapter extends BaseAdapterDecorator {
      * Saved instance state key for the ViewAniamt
      */
     private static final String SAVEDINSTANCESTATE_VIEWANIMATOR = "savedinstancestate_viewanimator";
-
-    /**
-     * Alpha property
-     */
-    private static final String ALPHA = "alpha";
-
     /**
      * The ViewAnimator responsible for animating the Views.
      */
@@ -156,28 +149,31 @@ public abstract class AnimationAdapter extends BaseAdapterDecorator {
      */
     private void animateViewIfNecessary(final int position, @NonNull final View view, @NonNull final ViewGroup parent) {
         assert mViewAnimator != null;
-        Animator[] animators = getAnimators(parent, view);
-        if (animators == null) {
-            return;
-        }
         /* GridView measures the first View which is returned by getView(int, View, ViewGroup), but does not use that View.
-           On KitKat, it does this actually multiple times.
-           Therefore, we animate all these first Views, and reset the last animated position when we suspect GridView is measuring. */
-        mGridViewPossiblyMeasuring = mGridViewPossiblyMeasuring && (mGridViewMeasuringPosition == -1 || mGridViewMeasuringPosition == position);
+        On KitKat, it does this actually multiple times.
+        Therefore, we animate all these first Views, and reset the last animated position when we suspect GridView is measuring. */
+         mGridViewPossiblyMeasuring = mGridViewPossiblyMeasuring && (mGridViewMeasuringPosition == -1 || mGridViewMeasuringPosition == position);
+    
+         if (mGridViewPossiblyMeasuring) {
+             mGridViewMeasuringPosition = position;
+             mViewAnimator.setLastAnimatedPosition(-1);
+         }
+         if (mViewAnimator.shouldAnimate(position)) {
+             Animator[] animators = getAnimators(position, view, parent);
+             
+             
 
-        if (mGridViewPossiblyMeasuring) {
-            mGridViewMeasuringPosition = position;
-            mViewAnimator.setLastAnimatedPosition(-1);
-        }
+             Animator[] childAnimators;
+             if (getDecoratedBaseAdapter() instanceof AnimationAdapter) {
+                 childAnimators = AnimatorUtil.concatAnimators(((AnimationAdapter) getDecoratedBaseAdapter()).getAnimators(position, view, parent), animators);
+             } else {
+                 childAnimators = animators;
+             }
 
-        Animator[] childAnimators;
-        if (getDecoratedBaseAdapter() instanceof AnimationAdapter) {
-            childAnimators = AnimatorUtil.concatAnimators(((AnimationAdapter) getDecoratedBaseAdapter()).getAnimators(parent, view), animators);
-        } else {
-            childAnimators = animators;
-        }
-
-        mViewAnimator.animateViewIfNecessary(position, view, childAnimators);
+             mViewAnimator.animateViewIfNecessary(position, view, childAnimators);
+         }
+     
+        
     }
 
     /**
@@ -187,7 +183,7 @@ public abstract class AnimationAdapter extends BaseAdapterDecorator {
      * @param view   The view that will be animated, as retrieved by getView().
      */
     @NonNull
-    public abstract Animator[] getAnimators(@NonNull ViewGroup parent, @NonNull View view);
+    public abstract Animator[] getAnimators(final int position, @NonNull View view, @NonNull ViewGroup parent);
 
     /**
      * Returns a Parcelable object containing the AnimationAdapter's current dynamic state.
