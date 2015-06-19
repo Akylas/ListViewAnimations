@@ -113,6 +113,9 @@ public class SwipeMenuAdapter extends BaseAdapterDecorator {
             view.prepareForReuse();
         }
         View contentView = super.getView(position, view.getContentView(), view);
+        if (contentView == null) {
+            return null;
+        }
         view.setContentView(contentView);
         
         if (mUndoAdapter != null) {
