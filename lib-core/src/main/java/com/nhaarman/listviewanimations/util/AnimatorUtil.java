@@ -30,6 +30,11 @@ public class AnimatorUtil {
      */
     @NonNull
     public static Animator[] concatAnimators(@NonNull final Animator[] childAnimators, @NonNull final Animator[] animators) {
+        if (animators == null) {
+            return childAnimators;
+        } else if (childAnimators == null) {
+            return animators;
+        }
         Animator[] allAnimators = new Animator[childAnimators.length + animators.length];
         int i;
 
