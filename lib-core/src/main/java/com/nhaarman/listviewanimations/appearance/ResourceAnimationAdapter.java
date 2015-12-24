@@ -20,8 +20,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.AnimatorInflater;
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
 
 import android.support.annotation.NonNull;
 

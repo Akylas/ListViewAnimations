@@ -22,7 +22,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
 
-import com.nineoldandroids.view.ViewHelper;
+import android.view.ViewHelper;
 
 import java.util.ArrayList;
 import java.util.List;

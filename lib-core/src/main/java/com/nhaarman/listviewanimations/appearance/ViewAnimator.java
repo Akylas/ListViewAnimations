@@ -28,8 +28,8 @@ import android.view.View;
 import android.widget.GridView;
 
 import com.nhaarman.listviewanimations.util.ListViewWrapper;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.AnimatorSet;
+import android.animation.Animator;
+import android.animation.AnimatorSet;
 
 /**
  * A class which decides whether given Views should be animated based on their position: each View should only be animated once.

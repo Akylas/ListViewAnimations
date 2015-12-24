@@ -20,8 +20,8 @@ import com.nhaarman.listviewanimations.itemmanipulation.TouchEventHandler;
 import com.nhaarman.listviewanimations.util.AdapterViewUtil;
 import com.nhaarman.listviewanimations.util.ListViewWrapper;
 import com.nhaarman.listviewanimations.util.OnNotifyDataSetChanged;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.AnimatorListenerAdapter;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 
 public class SwipeMenuTouchListener implements View.OnTouchListener, TouchEventHandler, OnNotifyDataSetChanged {
 

@@ -29,11 +29,10 @@ import android.widget.AdapterView;
 import com.nhaarman.listviewanimations.itemmanipulation.TouchEventHandler;
 import com.nhaarman.listviewanimations.util.AdapterViewUtil;
 import com.nhaarman.listviewanimations.util.ListViewWrapper;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.AnimatorListenerAdapter;
-import com.nineoldandroids.animation.AnimatorSet;
-import com.nineoldandroids.animation.ObjectAnimator;
-import com.nineoldandroids.view.ViewHelper;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 
 /**
  * An {@link android.view.View.OnTouchListener} that makes the list items in a {@link android.widget.AbsListView} swipeable.
@@ -449,10 +448,10 @@ public abstract class SwipeTouchListener implements View.OnTouchListener, TouchE
 
         if (mSwiping) {
             if (mCanDismissCurrent) {
-                ViewHelper.setTranslationX(mSwipingView, deltaX);
-                ViewHelper.setAlpha(mSwipingView, Math.max(mMinimumAlpha, Math.min(1, 1 - 2 * Math.abs(deltaX) / mViewWidth)));
+                mSwipingView.setTranslationX(deltaX);
+                mSwipingView.setAlpha(Math.max(mMinimumAlpha, Math.min(1, 1 - 2 * Math.abs(deltaX) / mViewWidth)));
             } else {
-                ViewHelper.setTranslationX(mSwipingView, deltaX * 0.1f);
+                mSwipingView.setTranslationX(deltaX * 0.1f);
             }
             return true;
         }
@@ -651,8 +650,8 @@ public abstract class SwipeTouchListener implements View.OnTouchListener, TouchE
      */
     protected void restoreViewPresentation(@NonNull final View view) {
         View swipedView = getSwipeView(view);
-        ViewHelper.setAlpha(swipedView, 1);
-        ViewHelper.setTranslationX(swipedView, 0);
+        swipedView.setAlpha(1);
+        swipedView.setTranslationX(0);
     }
 
     /**

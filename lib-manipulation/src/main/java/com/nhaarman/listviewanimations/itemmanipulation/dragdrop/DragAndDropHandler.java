@@ -21,11 +21,10 @@ import android.widget.WrapperListAdapter;
 import com.nhaarman.listviewanimations.itemmanipulation.DynamicListView;
 import com.nhaarman.listviewanimations.itemmanipulation.TouchEventHandler;
 import com.nhaarman.listviewanimations.util.Swappable;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.AnimatorListenerAdapter;
-import com.nineoldandroids.animation.ValueAnimator;
-import com.nineoldandroids.view.ViewHelper;
-import com.nineoldandroids.view.ViewPropertyAnimator;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
+import android.view.ViewPropertyAnimator;
 
 /**
  * A class which handles drag and drop functionality for listview implementations backed up by a
@@ -537,8 +536,8 @@ public class DragAndDropHandler implements TouchEventHandler {
 
                 View switchView = getViewForId(mSwitchId);
                 if (switchView != null) {
-                    ViewHelper.setTranslationY(switchView, mTranslationY);
-                    ViewPropertyAnimator.animate(switchView).translationY(0).start();
+                    switchView.setTranslationY(mTranslationY);
+                    switchView.animate().translationY(0).start();
                 }
 
                 mPreviousMobileView.setVisibility(View.VISIBLE);
@@ -579,8 +578,8 @@ public class DragAndDropHandler implements TouchEventHandler {
 
                 View switchView = getViewForId(mSwitchId);
                 if (switchView != null) {
-                    ViewHelper.setTranslationY(switchView, mTranslationY);
-                    ViewPropertyAnimator.animate(switchView).translationY(0).start();
+                    switchView.setTranslationY(mTranslationY);
+                    switchView.animate().translationY(0).start();
                 }
 
                 assert mMobileView != null;

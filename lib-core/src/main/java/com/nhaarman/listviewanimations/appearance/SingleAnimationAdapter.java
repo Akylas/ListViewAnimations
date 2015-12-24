@@ -19,7 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.nineoldandroids.animation.Animator;
+import android.animation.Animator;
 
 import android.support.annotation.NonNull;
 

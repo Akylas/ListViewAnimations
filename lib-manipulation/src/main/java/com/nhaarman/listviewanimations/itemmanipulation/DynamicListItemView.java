@@ -8,10 +8,9 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.nhaarman.listviewanimations.itemmanipulation.swipemenu.MenuContainerView;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.AnimatorListenerAdapter;
-import com.nineoldandroids.animation.ValueAnimator;
-import com.nineoldandroids.view.ViewHelper;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 
 public class DynamicListItemView extends FrameLayout {
 
@@ -217,7 +216,7 @@ public class DynamicListItemView extends FrameLayout {
         mCurrentMenuWidth = 0;
         mCurrentPercent = 0;
         if (mContentView != null) {
-            ViewHelper.setTranslationX(mContentView, 0);
+            mContentView.setTranslationX(0);
         }
     }
 
@@ -267,8 +266,8 @@ public class DynamicListItemView extends FrameLayout {
 
         if (percent == 0) {
             mCurrentMenu.setVisibility(INVISIBLE);
-            ViewHelper.setTranslationX(mContentView, 0);
-            ViewHelper.setX(mCurrentMenu, isRight?mWidth:-mCurrentMenuWidth);
+            mContentView.setTranslationX(0);
+            mCurrentMenu.setX(isRight?mWidth:-mCurrentMenuWidth);
         }
         else {
             final float menuPercent = Math.max(-1, Math.min(percent, 1));
@@ -279,11 +278,11 @@ public class DynamicListItemView extends FrameLayout {
             }
             final float deltaX = percent * mCurrentMenuWidth;
 
-            ViewHelper.setTranslationX(mContentView, deltaX);
+            mContentView.setTranslationX(deltaX);
             if (mCurrentMenu.getVisibility() != VISIBLE) {
                 mCurrentMenu.setVisibility(VISIBLE);
             }
-            ViewHelper.setX(mCurrentMenu, isRight?(mWidth + menuPercent * mCurrentMenuWidth):((menuPercent - 1) * mCurrentMenuWidth));
+            mCurrentMenu.setX(isRight?(mWidth + menuPercent * mCurrentMenuWidth):((menuPercent - 1) * mCurrentMenuWidth));
         }
     }
 

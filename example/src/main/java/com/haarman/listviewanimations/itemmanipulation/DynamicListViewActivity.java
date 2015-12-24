@@ -45,10 +45,10 @@ import com.nhaarman.listviewanimations.itemmanipulation.swipemenu.MenuAdapter;
 import com.nhaarman.listviewanimations.itemmanipulation.swipemenu.SwipeMenuAdapter;
 import com.nhaarman.listviewanimations.itemmanipulation.swipemenu.SwipeMenuCallback;
 import com.nhaarman.listviewanimations.itemmanipulation.swipemenu.SwipeMenuTouchListener;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.AnimatorSet;
-import com.nineoldandroids.animation.ObjectAnimator;
-import com.nineoldandroids.view.ViewHelper;
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.view.ViewHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;

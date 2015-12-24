@@ -21,8 +21,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.nhaarman.listviewanimations.appearance.AnimationAdapter;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.ObjectAnimator;
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 
 public class ScaleInAnimationAdapter extends AnimationAdapter {
 

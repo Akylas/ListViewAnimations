@@ -1,7 +1,7 @@
 package com.nhaarman.listviewanimations.util;
 
 
-import com.nineoldandroids.animation.Animator;
+import android.animation.Animator;
 
 import junit.framework.TestCase;
 

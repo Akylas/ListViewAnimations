@@ -4,7 +4,7 @@ import android.test.InstrumentationTestCase;
 import android.view.View;
 
 import com.nhaarman.listviewanimations.util.ListViewWrapper;
-import com.nineoldandroids.animation.Animator;
+import android.animation.Animator;
 
 import org.mockito.Mock;
 
