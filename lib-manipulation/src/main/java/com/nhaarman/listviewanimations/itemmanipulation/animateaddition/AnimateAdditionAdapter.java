@@ -358,6 +358,7 @@ public class AnimateAdditionAdapter<T> extends BaseAdapterDecorator {
         final View view = super.getView(position, convertView, parent);
 
         if (mInsertQueue.getActiveIndexes().contains(position)) {
+            mInsertQueue.removeActiveIndex(position);
             int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(ViewGroup.LayoutParams.MATCH_PARENT, View.MeasureSpec.AT_MOST);
             int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(ViewGroup.LayoutParams.WRAP_CONTENT, View.MeasureSpec.UNSPECIFIED);
             view.measure(widthMeasureSpec, heightMeasureSpec);
@@ -563,7 +564,6 @@ public class AnimateAdditionAdapter<T> extends BaseAdapterDecorator {
         public void onAnimationEnd(final Animator animation) {
             //restore view height to wrap_content
             restoreViewPresentation(mView);
-            mInsertQueue.removeActiveIndex(mPosition);
         }
     }
 
