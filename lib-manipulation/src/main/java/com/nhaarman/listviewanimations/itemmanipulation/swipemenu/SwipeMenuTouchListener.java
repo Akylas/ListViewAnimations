@@ -582,6 +582,9 @@ public class SwipeMenuTouchListener implements View.OnTouchListener, TouchEventH
         else if (mCurrentView != null) {
             beforeCloseMenu(mCurrentView, mCurrentPosition);
             mCurrentView.closeMenu(animationTime, mCloseAnimationListener);
+        } else {
+            //still make sure the callback is called
+            afterCloseMenu(null, -1, DynamicListItemView.DIRECTION_NONE);
         }
     }
 

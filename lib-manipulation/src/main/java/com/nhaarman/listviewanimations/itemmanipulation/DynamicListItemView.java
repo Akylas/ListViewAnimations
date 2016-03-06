@@ -24,7 +24,7 @@ public class DynamicListItemView extends FrameLayout {
      * The container view {@link android.view.View}.
      */
     @NonNull
-    private final FrameLayout mContainerView;
+//    private final FrameLayout mContainerView;
 
     /**
      * The content {@link android.view.View}.
@@ -90,35 +90,33 @@ public class DynamicListItemView extends FrameLayout {
     public DynamicListItemView(final Context context) {
         super(context);
         setClipChildren(false);
-        mContainerView = new FrameLayout(context) {
-            @Override
-            protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-                super.onMeasure(widthMeasureSpec, heightMeasureSpec); 
-                //framelayout compute max size whatever the LayoutParams,
-                //consequently while measuring the the buttons, the frame might get higher.
-                //this makes sure we actually use the content height and layout menus accordingly
-                if ((heightMeasureSpec <= 0) && mContentView != null ) {
-                    int height = mContentView.getMeasuredHeight();
-                    
-                    setMeasuredDimension(getMeasuredWidth(), height);
-                    heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.AT_MOST);
-                    if (mLeftMenu != null) {
-                        int menuHeight = mLeftMenu.getMeasuredHeight();
-                        if (menuHeight > height) {
-                            measureChildWithMargins(mLeftMenu, widthMeasureSpec, 0, heightMeasureSpec, 0);
-                        }
-                    }
-                    if (mRightMenu != null) {
-                        int menuHeight = mRightMenu.getMeasuredHeight();
-                        if (menuHeight > height) {
-                            measureChildWithMargins(mRightMenu, widthMeasureSpec, 0, heightMeasureSpec, 0);
-                        }
-                    }
-                }
-            }
-        };
-        mContainerView.setClipChildren(false);
-        addView(mContainerView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+//        mContainerView = new FrameLayout(context) {
+//            @Override
+//            protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//                super.onMeasure(widthMeasureSpec, heightMeasureSpec); 
+//                //framelayout compute max size whatever the LayoutParams,
+//                //consequently while measuring the the buttons, the frame might get higher.
+//                //this makes sure we actually use the content height and layout menus accordingly
+//                if ((heightMeasureSpec <= 0) && mContentView != null ) {
+//                    int height = mContentView.getMeasuredHeight();
+//                    
+//                    setMeasuredDimension(getMeasuredWidth(), height);
+//                    heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.AT_MOST);
+//                    if (mLeftMenu != null) {
+//                        int menuHeight = mLeftMenu.getMeasuredHeight();
+//                        if (menuHeight > height) {
+//                            measureChildWithMargins(mLeftMenu, widthMeasureSpec, 0, heightMeasureSpec, 0);
+//                        }
+//                    }
+//                    if (mRightMenu != null) {
+//                        int menuHeight = mRightMenu.getMeasuredHeight();
+//                        if (menuHeight > height) {
+//                            measureChildWithMargins(mRightMenu, widthMeasureSpec, 0, heightMeasureSpec, 0);
+//                        }
+//                    }
+//                }
+//            }
+//        };
         mContext = context;
     }
 
@@ -127,11 +125,11 @@ public class DynamicListItemView extends FrameLayout {
      */
     public void setContentView(@NonNull final View contentView) {
         if (mContentView != null) {
-            mContainerView.removeView(mContentView);
+            removeView(mContentView);
         }
         mContentView = contentView;
         if (contentView != null) {
-            mContainerView.addView(mContentView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+            addView(mContentView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         }
         else {
             //this is a possible case when for example:
@@ -144,22 +142,22 @@ public class DynamicListItemView extends FrameLayout {
      */
     public void setOverlayView(final View overlayView) {
         if (mOverlayView != null) {
-            mContainerView.removeView(mOverlayView);
+            removeView(mOverlayView);
         }
         mOverlayView = overlayView;
         if (mOverlayView != null) {
             mOverlayView.setVisibility(GONE);
-            mContainerView.addView(mOverlayView);
+            addView(mOverlayView);
         }
     }
 
     /**
      * Returns the container {@link android.widget.FrameLayout}.
      */
-    @Nullable
-    public FrameLayout getContainerView() {
-        return mContainerView;
-    }
+//    @Nullable
+//    public FrameLayout getContainerView() {
+//        return mContainerView;
+//    }
 
     /**
      * Returns the content {@link android.view.View}.
@@ -195,11 +193,11 @@ public class DynamicListItemView extends FrameLayout {
 
     public void prepareForReuse() {
         if (mLeftMenu != null) {
-            mContainerView.removeView(mLeftMenu);
+            removeView(mLeftMenu);
             mLeftMenu = null;
         }
         if (mRightMenu != null) {
-            mContainerView.removeView(mRightMenu);
+            removeView(mRightMenu);
             mRightMenu = null;
         }
         reset();
@@ -222,25 +220,25 @@ public class DynamicListItemView extends FrameLayout {
 
     public void setLeftButtons(View[] buttons) {
         if (mLeftMenu != null) {
-            mContainerView.removeView(mLeftMenu);
+            removeView(mLeftMenu);
             mLeftMenu = null;
         }
         
         if (buttons == null) return;
         mLeftMenu = new MenuContainerView(mContext, buttons);
-        mContainerView.addView(mLeftMenu, 0, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+        addView(mLeftMenu, 0, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
         mLeftMenu.setVisibility(INVISIBLE);
     }
 
     public void setRightButtons(View[] buttons) {
         if (mRightMenu != null) {
-            mContainerView.removeView(mRightMenu);
+            removeView(mRightMenu);
             mRightMenu = null;
         }
 
         if (buttons == null) return;
         mRightMenu = new MenuContainerView(mContext, buttons);
-        mContainerView.addView(mRightMenu, 0, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+        addView(mRightMenu, 0, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
         mRightMenu.setVisibility(INVISIBLE);
     }
 
@@ -249,6 +247,32 @@ public class DynamicListItemView extends FrameLayout {
             mWidth = w;
             if (mCurrentMenu != null) {
                 setPercent((mCurrentDirection == DIRECTION_RIGHT)?-1:1);
+            }
+        }
+    }
+    
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec); 
+        //framelayout compute max size whatever the LayoutParams,
+        //consequently while measuring the the buttons, the frame might get higher.
+        //this makes sure we actually use the content height and layout menus accordingly
+        if ((heightMeasureSpec <= 0) && mContentView != null ) {
+            int height = mContentView.getMeasuredHeight();
+            
+            setMeasuredDimension(getMeasuredWidth(), height);
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.AT_MOST);
+            if (mLeftMenu != null) {
+                int menuHeight = mLeftMenu.getMeasuredHeight();
+                if (menuHeight > height) {
+                    measureChildWithMargins(mLeftMenu, widthMeasureSpec, 0, heightMeasureSpec, 0);
+                }
+            }
+            if (mRightMenu != null) {
+                int menuHeight = mRightMenu.getMeasuredHeight();
+                if (menuHeight > height) {
+                    measureChildWithMargins(mRightMenu, widthMeasureSpec, 0, heightMeasureSpec, 0);
+                }
             }
         }
     }
@@ -282,7 +306,8 @@ public class DynamicListItemView extends FrameLayout {
             if (mCurrentMenu.getVisibility() != VISIBLE) {
                 mCurrentMenu.setVisibility(VISIBLE);
             }
-            mCurrentMenu.setX(isRight?(mWidth + menuPercent * mCurrentMenuWidth):((menuPercent - 1) * mCurrentMenuWidth));
+//            mCurrentMenu.setX(isRight?(mWidth + menuPercent * mCurrentMenuWidth):((menuPercent - 1) * mCurrentMenuWidth));
+            mCurrentMenu.setX(isRight?(mWidth - mCurrentMenuWidth):0);
         }
     }
 

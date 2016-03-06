@@ -6,20 +6,20 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-import java.util.Arrays;
-import java.util.List;
+//import java.util.Arrays;
+//import java.util.List;
 
 
 public class MenuContainerView extends FrameLayout {
 
-    private List<View> mButtons;
+//    private List<View> mButtons;
     private LinearLayout mContainer;
     /**
      * Creates a new {@code MenuContainerView}.
      */
     public MenuContainerView(final Context context, final View[] buttons) {
         super(context);
-        mButtons = Arrays.asList(buttons);
+//        mButtons = Arrays.asList(buttons);
         LayoutParams defaultLayoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
         setLayoutParams(defaultLayoutParams);
         mContainer = new LinearLayout(context);
@@ -36,9 +36,9 @@ public class MenuContainerView extends FrameLayout {
     }
     
     //can't use the same name as the super method is final
-    public void setMeasuredDimensions(final int width, final int height) {
-        super.setMeasuredDimension(width, height);
-    }
+//    public void setMeasuredDimensions(final int width, final int height) {
+//        super.setMeasuredDimension(width, height);
+//    }
 
 
 

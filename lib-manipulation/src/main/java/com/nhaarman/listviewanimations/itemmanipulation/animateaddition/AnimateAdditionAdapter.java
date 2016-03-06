@@ -144,7 +144,6 @@ public class AnimateAdditionAdapter<T> extends BaseAdapterDecorator {
      *
      * @param shouldAnimateDown defaults to {@code true}.
      */
-    @SuppressWarnings("UnusedDeclaration")
     public void setShouldAnimateDown(final boolean shouldAnimateDown) {
         mShouldAnimateDown = shouldAnimateDown;
     }
@@ -154,7 +153,6 @@ public class AnimateAdditionAdapter<T> extends BaseAdapterDecorator {
      *
      * @param scrolldownAnimationDurationMs the duration in ms.
      */
-    @SuppressWarnings("UnusedDeclaration")
     public void setScrolldownAnimationDuration(final long scrolldownAnimationDurationMs) {
         mScrolldownAnimationDurationMs = scrolldownAnimationDurationMs;
     }
@@ -164,7 +162,6 @@ public class AnimateAdditionAdapter<T> extends BaseAdapterDecorator {
      *
      * @param insertionAnimationDurationMs the duration in ms.
      */
-    @SuppressWarnings("UnusedDeclaration")
     public void setInsertionAnimationDuration(final long insertionAnimationDurationMs) {
         mInsertionAnimationDurationMs = insertionAnimationDurationMs;
     }
@@ -305,7 +302,6 @@ public class AnimateAdditionAdapter<T> extends BaseAdapterDecorator {
      */
     public void removeItem(final int position, final int count) {
         int headerViewsCount = getListViewWrapper().getHeaderViewsCount();
-        int  posRemovable;
         int firstVisiblePosition = getListViewWrapper().getFirstVisiblePosition();
         int lastVisiblePosition = getListViewWrapper().getLastVisiblePosition();
 
@@ -417,13 +413,17 @@ public class AnimateAdditionAdapter<T> extends BaseAdapterDecorator {
         
         int originalHeight = view.getMeasuredHeight();
 
-        if (view instanceof DynamicListItemView) {
+        if (view instanceof ViewGroup) {
             //this is to get a nice "closing" animation by making sure the contentView
             //height remain fix during the animation
-            View containerView = ((DynamicListItemView) view).getContainerView();
-            ViewGroup.LayoutParams params = containerView.getLayoutParams();
-            params.height = originalHeight;
-            containerView.setLayoutParams(params);
+            final int count = ((ViewGroup) view).getChildCount();
+            ViewGroup.LayoutParams params;
+            for (int i = 0; i < count - 1; i++) {
+                final View child = ((ViewGroup) view).getChildAt(i);
+                params = child.getLayoutParams();
+                params.height = originalHeight;
+                child.setLayoutParams(params);
+            }
         }
 
         ValueAnimator heightAnimator = ValueAnimator.ofInt(originalHeight, 0);
@@ -453,7 +453,6 @@ public class AnimateAdditionAdapter<T> extends BaseAdapterDecorator {
      *
      * @return a non-null array of Animators.
      */
-    @SuppressWarnings({"MethodMayBeStatic", "UnusedParameters"})
     @NonNull
     protected ValueAnimator[] getAdditionalAnimators(@NonNull final View view, final int position, @NonNull final ViewGroup parent) {
         return new ValueAnimator[]{};
@@ -523,11 +522,15 @@ public class AnimateAdditionAdapter<T> extends BaseAdapterDecorator {
     }
 
     protected void restoreViewPresentation(@NonNull final View view) {
-        if (view instanceof DynamicListItemView) {
-            View containerView = ((DynamicListItemView) view).getContainerView();
-            ViewGroup.LayoutParams params = containerView.getLayoutParams();
-            params.height = ViewGroup.LayoutParams.MATCH_PARENT;
-            containerView.setLayoutParams(params);
+        if (view instanceof ViewGroup) {
+            final int count = ((ViewGroup) view).getChildCount();
+            ViewGroup.LayoutParams params;
+            for (int i = 0; i < count - 1; i++) {
+                final View child = ((ViewGroup) view).getChildAt(i);
+                params = child.getLayoutParams();
+                params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+                child.setLayoutParams(params);
+            }
         }
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
         layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
