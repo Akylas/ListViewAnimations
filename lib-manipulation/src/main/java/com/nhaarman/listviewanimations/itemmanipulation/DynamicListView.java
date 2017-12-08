@@ -16,6 +16,7 @@
 
 package com.nhaarman.listviewanimations.itemmanipulation;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -60,7 +61,8 @@ import se.emilsjolander.stickylistheaders.AdapterWrapper;
  * <li>Animate addition</li>
  * </ul>
  */
-public class DynamicListView extends ListView {
+@SuppressLint("NewApi")
+public class DynamicListView extends NestedListView {
 
     @NonNull
     private final MyOnScrollListener mMyOnScrollListener;
@@ -130,7 +132,7 @@ public class DynamicListView extends ListView {
 
         super.setOnTouchListener(onTouchListener);
     }
-
+    
     @Override
     public void setOnScrollListener(final OnScrollListener onScrollListener) {
         mMyOnScrollListener.addOnScrollListener(onScrollListener);
@@ -374,6 +376,12 @@ public class DynamicListView extends ListView {
     @Override
     public int computeVerticalScrollRange() {
         return super.computeVerticalScrollRange();
+    }
+    
+    public void setShouldAnimateDown(final boolean shouldAnimateDown) {
+        if (mAnimateAdditionAdapter != null) {
+            mAnimateAdditionAdapter.setShouldAnimateDown(shouldAnimateDown);
+        }
     }
 
     /* Proxy methods below */

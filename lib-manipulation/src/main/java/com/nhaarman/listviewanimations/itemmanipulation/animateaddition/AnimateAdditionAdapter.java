@@ -28,7 +28,6 @@ import android.widget.ListView;
 import android.widget.SectionIndexer;
 
 import com.nhaarman.listviewanimations.BaseAdapterDecorator;
-import com.nhaarman.listviewanimations.itemmanipulation.DynamicListItemView;
 import com.nhaarman.listviewanimations.util.AbsListViewWrapper;
 import com.nhaarman.listviewanimations.util.Insertable;
 import com.nhaarman.listviewanimations.util.Removable;
@@ -356,6 +355,9 @@ public class AnimateAdditionAdapter<T> extends BaseAdapterDecorator {
     @NonNull
     public View getView(final int position, @Nullable final View convertView, @NonNull final ViewGroup parent) {
         final View view = super.getView(position, convertView, parent);
+        if (view == null) {
+            return view;
+        }
 
         if (mInsertQueue.getActiveIndexes().contains(position)) {
             mInsertQueue.removeActiveIndex(position);
@@ -367,6 +369,9 @@ public class AnimateAdditionAdapter<T> extends BaseAdapterDecorator {
             if (viewToAnimate instanceof WrapperView) {
                 //StickyListHeadersView WrapperView
                 viewToAnimate =  ((WrapperView)view).getItem();
+            }
+            if (viewToAnimate == null) {
+                return view;
             }
             int originalHeight = viewToAnimate.getMeasuredHeight();
 

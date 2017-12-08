@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.nhaarman.listviewanimations.itemmanipulation.swipemenu.MenuContainerView;
@@ -129,6 +130,9 @@ public class DynamicListItemView extends FrameLayout {
         }
         mContentView = contentView;
         if (contentView != null) {
+            if(mContentView.getParent() != null) {
+                ((ViewGroup) mContentView.getParent()).removeView(mContentView);
+            }
             addView(mContentView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         }
         else {
@@ -200,6 +204,10 @@ public class DynamicListItemView extends FrameLayout {
             removeView(mRightMenu);
             mRightMenu = null;
         }
+//        if (mContentView != null) {
+//            removeView(mContentView);
+//            mContentView = null;
+//        }
         reset();
     }
 
