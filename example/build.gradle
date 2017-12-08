@@ -17,10 +17,10 @@
 apply plugin: 'com.android.application'
 
 dependencies {
+    compile 'se.emilsjolander:stickylistheaders:2.5.0'
     compile 'com.android.support:support-annotations:20.0.0'
 
     compile 'com.android.support:support-v4:20.0.0'
-    compile 'se.emilsjolander:stickylistheaders:2.5.0'
 
     compile project(':lib-core')
     compile project(':lib-core-slh')
@@ -28,13 +28,13 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 20
+    compileSdkVersion 23
     buildToolsVersion '20.0.0'
 
     defaultConfig {
         minSdkVersion 14
         //noinspection OldTargetApi
-        targetSdkVersion 20
+        targetSdkVersion 23
         versionName project.VERSION_NAME
         versionCode Integer.parseInt(new Date().format('yyyyMMddHH'))
     }
